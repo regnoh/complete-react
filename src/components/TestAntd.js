@@ -3,7 +3,7 @@ import { Button } from "antd";
 export default function TestAntd() {
   return (
     <div>
-      <Button loading type="success">
+      <Button loading type="primary">
         Antd Button
       </Button>
     </div>
