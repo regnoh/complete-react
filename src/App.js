@@ -6,8 +6,7 @@ import { Frame } from "./components";
 // import { HocWrappedComp, TestAntd } from "./tests";
 const App = () => {
   return (
-    <div>
-      <Frame />
+    <Frame>
       <Switch>
         {adminRoutes.map(({ path, exact, component: Component }) => {
           return (
@@ -24,7 +23,7 @@ const App = () => {
         {/* /admin/xxxx -> 404  */}
         <Redirect to="/404" />
       </Switch>
-    </div>
+    </Frame>
   );
 };
 
