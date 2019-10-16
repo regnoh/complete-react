@@ -1,15 +1,15 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { adminRoutes } from "./routes";
+import { Frame } from "./components";
 
 // import { HocWrappedComp, TestAntd } from "./tests";
 const App = () => {
   return (
     <div>
-      公共部分
+      <Frame />
       <Switch>
-        {adminRoutes.map(({ path, exact, component }) => {
-          const Component = component;
+        {adminRoutes.map(({ path, exact, component: Component }) => {
           return (
             <Route
               key={path}
