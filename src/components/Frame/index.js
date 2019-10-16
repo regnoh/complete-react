@@ -21,14 +21,15 @@ const Frame = ({ children }) => {
         <Sider width={200} style={{ background: "#fff" }}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={[""]}
+            defaultSelectedKeys={[navRoutes[0].path]}
             // defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
-            {navRoutes.map(({ path, title, isNav }, index) => (
-              <Menu.Item>
-                <Link key={index} to={path}>
-                  {title}
+            {navRoutes.map(({ path, icon, title }) => (
+              <Menu.Item key={path}>
+                <Link to={path}>
+                  <Icon type={icon} />
+                  <span>{title}</span>
                 </Link>
               </Menu.Item>
             ))}
