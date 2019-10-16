@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import { adminRoutes } from "../../routes";
 import logo from "./logo.png";
 import "./index.less";
-const { SubMenu } = Menu;
+import { withRouter } from "react-router-dom";
 const { Header, Content, Sider } = Layout;
 // 在线制作logo: http://www.uugai.com/
 // antd - layout - less修改样式
-const Frame = ({ children }) => {
+const Frame = ({ children, location }) => {
   const navRoutes = adminRoutes.filter(r => r.isNav);
   return (
     <Layout className="yf-frame">
@@ -21,7 +21,8 @@ const Frame = ({ children }) => {
         <Sider width={200} style={{ background: "#fff" }}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={[navRoutes[0].path]}
+            defaultSelectedKeys={[location.pathname]}
+            // defaultSelectedKeys={[navRoutes[0].path]} // 写死。刷新时当前页面都是dashboard
             // defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
@@ -51,4 +52,4 @@ const Frame = ({ children }) => {
     </Layout>
   );
 };
-export default Frame;
+export default withRouter(Frame);
