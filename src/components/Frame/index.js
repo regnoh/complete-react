@@ -10,6 +10,7 @@ const { Header, Content, Sider } = Layout;
 // antd - layout - less修改样式
 const Frame = ({ children, location }) => {
   const navRoutes = adminRoutes.filter(r => r.isNav);
+  console.log(location.pathname);
   return (
     <Layout className="yf-frame">
       <Header className="header yf-header">
@@ -21,8 +22,9 @@ const Frame = ({ children, location }) => {
         <Sider width={200} style={{ background: "#fff" }}>
           <Menu
             mode="inline"
-            defaultSelectedKeys={[location.pathname]}
-            // defaultSelectedKeys={[navRoutes[0].path]} // 写死。刷新时当前页面都是dashboard
+            selectedKeys={[location.pathname]} // 当前选中菜单项，实时变化 /admin->/admin/dashboard
+            // defaultSelectedKeys={[location.pathname]} // 初始选中菜单项， 但是输入/admin时，初始没选中
+            // defaultSelectedKeys={[navRoutes[0].path]} // 写死。刷新时当前都是dashboard
             // defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
           >
