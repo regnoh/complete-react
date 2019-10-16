@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { mainRoutes } from "./routes";
 import App from "./App";
+import "./index.less";
 ReactDOM.render(
   <Router>
     <Switch>

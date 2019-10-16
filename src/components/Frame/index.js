@@ -11,7 +11,7 @@ const { Header, Content, Sider } = Layout;
 const Frame = ({ children }) => {
   const navRoutes = adminRoutes.filter(r => r.isNav);
   return (
-    <Layout>
+    <Layout className="yf-frame">
       <Header className="header yf-header">
         <div className="logo yf-logo">
           <img src={logo} alt="yf" />
@@ -36,11 +36,6 @@ const Frame = ({ children }) => {
           </Menu>
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
           <Content
             style={{
               background: "#fff",
