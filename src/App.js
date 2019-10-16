@@ -1,10 +1,11 @@
 import React from "react";
-import HocWrappedComp from "./components/HocWrappedComp";
+import { HocWrappedComp, TestAntd } from "./components";
 const App = () => {
   return (
     <div>
       App
       <HocWrappedComp />
+      <TestAntd />
     </div>
   );
 };
