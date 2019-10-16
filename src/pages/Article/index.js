@@ -1,6 +1,19 @@
 import React from "react";
 import { Card, Button, Table } from "antd";
-const dataSource = []; // 配置国际化后 no data -> 暂无数据
+const dataSource = [
+  {
+    key: "1",
+    name: "胡彦斌",
+    age: 32,
+    address: "西湖区湖底公园1号"
+  },
+  {
+    key: "2",
+    name: "胡彦祖",
+    age: 42,
+    address: "西湖区湖底公园1号"
+  }
+]; // 配置国际化后 no data -> 暂无数据
 
 const columns = [
   {
@@ -17,9 +30,30 @@ const columns = [
     title: "住址",
     dataIndex: "address",
     key: "address"
+  },
+  {
+    title: "操作",
+    dataIndex: "action",
+    key: "action",
+    render: (text, record, index) => {
+      // console.log("renderProps: ", { text, record, index });
+      return <Button>编辑</Button>;
+    }
   }
 ];
-
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      "selectedRows: ",
+      selectedRows
+    );
+  },
+  getCheckboxProps: record => ({
+    // disabled: record.name === "Disabled User", // Column configuration not to be checked
+    name: record.name
+  })
+};
 const ArticleList = () => {
   return (
     <Card
@@ -27,7 +61,16 @@ const ArticleList = () => {
       extra={<Button>导出为excel</Button>}
       bordered={false}
     >
-      <Table dataSource={dataSource} columns={columns} />
+      <Table
+        // loading={true}
+        dataSource={dataSource}
+        columns={columns}
+        rowSelection={rowSelection}
+        pagination={{
+          total: 20,
+          pageSize: 10
+        }}
+      />
     </Card>
   );
 };
