@@ -3,6 +3,8 @@ import { Card, Button, Table, Tag } from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
 import { fetchArticles } from "../../services/articles";
+// 将dayjs挂载到window上，便于在浏览器console直接使用dayjs
+// window.dayjs = dayjs;
 const ArticleList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [columns, setColumns] = useState([]);
