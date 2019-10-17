@@ -35,3 +35,6 @@ service.interceptors.response.use(res => {
 export const fetchArticles = (offset = 0, limited = 10) => {
   return service.post("/api/v1/articles", { offset, limited });
 };
+export const deleteArticle = id => {
+  return service.delete(`/api/v1/articles/${id}`);
+};

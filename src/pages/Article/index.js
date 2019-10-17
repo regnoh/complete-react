@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Table, Tag } from "antd";
+import {
+  Card,
+  Button,
+  Table,
+  Tag,
+  Popconfirm,
+  Typography,
+  message
+} from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
 import XLSX from "xlsx";
-import { fetchArticles } from "../../services/articles";
+import { fetchArticles, deleteArticle } from "../../services/articles";
 import ButtonGroup from "antd/lib/button/button-group";
+const { Title, Text } = Typography;
 // 将dayjs挂载到window上，便于在浏览器console直接使用dayjs
 // window.dayjs = dayjs;
 const ArticleList = () => {
@@ -62,13 +71,34 @@ const ArticleList = () => {
             <Button size="small" type="primary">
               编辑
             </Button>
-            <Button size="small" type="danger">
-              删除
-            </Button>
+            <Popconfirm
+              title={
+                <div>
+                  <Title level={4}>此操作不可逆，请慎重！！！</Title>
+                  <Text>
+                    确定要删除文章《
+                    <span style={{ color: "red" }}>{record.title}》</span>吗？
+                  </Text>
+                </div>
+              }
+              okText="删除"
+              cancelText="取消"
+              onConfirm={() => handleDelete(record.id)}
+            >
+              <Button size="small" type="danger">
+                删除
+              </Button>
+            </Popconfirm>
           </ButtonGroup>
         );
       }
     };
+  };
+  // 确认删除
+  const handleDelete = id => {
+    deleteArticle(id)
+      .then(res => message.success(res.msg))
+      .catch(err => {});
   };
   const getColumns = list => {
     return [...getDataColumns(list), getActionColumn()];
