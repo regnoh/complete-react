@@ -10,6 +10,8 @@ const ArticleList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [columns, setColumns] = useState([]);
   const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [limited, setLimited] = useState(10);
   const [loading, setLoading] = useState(false);
   const ARTICLE_COLUMN_ZH_MAP = {
     title: "标题",
@@ -72,10 +74,17 @@ const ArticleList = () => {
       // createAt: new Date(item.createAt).getFullYear()
     }));
   };
-
+  const onPageChange = (page, pageSize) => {
+    console.log("ArticleList -> page, pageSize", page, pageSize);
+    setOffset((page - 1) * pageSize);
+  };
+  const onPageSizeChange = (current, size) => {
+    console.log("onPageSizeChange -> current, size", current, size);
+    setLimited(size);
+  };
   useEffect(() => {
     setLoading(true);
-    fetchArticles()
+    fetchArticles(offset, limited)
       .then(res => {
         // console.log("res ", res);
         setTotal(res.total);
@@ -86,7 +95,7 @@ const ArticleList = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [offset, limited]);
   return (
     <Card
       title="文章列表"
@@ -100,7 +109,12 @@ const ArticleList = () => {
         columns={columns}
         pagination={{
           total,
-          hideOnSinglePage: true
+          pageSize: limited,
+          hideOnSinglePage: true,
+          showQuickJumper: true,
+          showSizeChanger: true,
+          onChange: onPageChange,
+          onShowSizeChange: onPageSizeChange
         }}
       />
     </Card>
