@@ -15,6 +15,7 @@ const ArticleList = () => {
   const [limited, setLimited] = useState(10);
   const [loading, setLoading] = useState(false);
   const ARTICLE_COLUMN_ZH_MAP = {
+    id: "id",
     title: "标题",
     author: "作者",
     createAt: "时间",
@@ -24,8 +25,8 @@ const ArticleList = () => {
     // 根据某种类别进行条件渲染, 可独立定义map
     return ARTICLE_COLUMN_ZH_MAP[key];
   };
-  const getColumns = list => {
-    const keys = Object.keys(list[0]).filter(key => key !== "id");
+  const getDataColumns = list => {
+    const keys = Object.keys(list[0]);
     const columns = [
       ...keys.map(key => {
         if (key === "amount") {
@@ -46,30 +47,35 @@ const ArticleList = () => {
             dataIndex: key
           };
         }
-      }),
-      {
-        title: "操作",
-        dataIndex: "action",
-        key: "action",
-        render: (text, record, index) => {
-          return (
-            <ButtonGroup>
-              <Button size="small" type="primary">
-                编辑
-              </Button>
-              <Button size="small" type="danger">
-                删除
-              </Button>
-            </ButtonGroup>
-          );
-        }
-      }
+      })
     ];
     return columns;
   };
+  const getActionColumn = () => {
+    return {
+      title: "操作",
+      dataIndex: "action",
+      key: "action",
+      render: (text, record, index) => {
+        return (
+          <ButtonGroup>
+            <Button size="small" type="primary">
+              编辑
+            </Button>
+            <Button size="small" type="danger">
+              删除
+            </Button>
+          </ButtonGroup>
+        );
+      }
+    };
+  };
+  const getColumns = list => {
+    return [...getDataColumns(list), getActionColumn()];
+  };
   const getDataSource = list => {
     return list.map(item => ({
-      key: item.id,
+      // key: item.id,
       ...item,
       createAt: dayjs(item.createAt).format("YYYY-MM-DD")
       // createAt: new Date(item.createAt).getFullYear()
@@ -77,6 +83,7 @@ const ArticleList = () => {
   };
   const onPageChange = (page, pageSize) => {
     // console.log("ArticleList -> page, pageSize", page, pageSize);
+    setLimited(pageSize);
     setOffset((page - 1) * pageSize);
   };
   const onPageSizeChange = (current, size) => {
@@ -101,16 +108,25 @@ const ArticleList = () => {
 
     XLSX.writeFile(wb, filename);
   };
+  const formatData = () => {
+    const titles = Object.keys(dataSource[0]);
+    // console.log("TCL: formatData -> titles", titles);
+    const rowValues = dataSource.map(row => Object.values(row));
+    const data = [titles, ...rowValues];
+    // console.log("TCL: formatData -> data", data);
+    return data;
+  };
   const onToExcel = () => {
     // 实际项目中，是由前端发送ajax请求，由后端返回一个文件下载地址
     // 这里用xlsx包来测试前端表格下载
-    const data = [["a", "b"], [1, 2]];
+    const data = formatData();
     // 文件名
     const filename = `yf-articles-${offset / limited + 1}-${dayjs().format(
       "YYYYMMDDhhmmss"
     )}.xlsx`;
     exportFile(data, filename);
   };
+  // TODO: 每次请求获得的数据都固定为10个，如何根据传入的limited修改
   useEffect(() => {
     setLoading(true);
     fetchArticles(offset, limited)
@@ -132,14 +148,14 @@ const ArticleList = () => {
       bordered={false}
     >
       <Table
-        // rowKey={record => record.id}
+        rowKey={record => record.id}
         loading={loading}
         dataSource={dataSource}
         columns={columns}
         pagination={{
           total,
           current: offset / limited + 1,
-          pageSize: limited,
+          // pageSize: limited,
           hideOnSinglePage: true,
           showQuickJumper: true,
           showSizeChanger: true,
