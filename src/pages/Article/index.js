@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Button,
-  Table,
-  Tag,
-  Popconfirm,
-  Typography,
-  message
-} from "antd";
+import { Card, Button, Table, Tag, message, Modal } from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
 import XLSX from "xlsx";
 import { fetchArticles, deleteArticle } from "../../services/articles";
-import ButtonGroup from "antd/lib/button/button-group";
-const { Title, Text } = Typography;
 // 将dayjs挂载到window上，便于在浏览器console直接使用dayjs
 // window.dayjs = dayjs;
 const ArticleList = () => {
@@ -23,6 +13,9 @@ const ArticleList = () => {
   const [offset, setOffset] = useState(0);
   const [limited, setLimited] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [article, setArticle] = useState({}); // 要删除的文章
+  const [modalLoading, setModalLoading] = useState(false); // 确认删除，loading
+  const [modalVisible, setModalVisible] = useState(false); // 点击删除按钮， 显示弹窗
   const ARTICLE_COLUMN_ZH_MAP = {
     id: "id",
     title: "标题",
@@ -67,38 +60,41 @@ const ArticleList = () => {
       key: "action",
       render: (text, record, index) => {
         return (
-          <ButtonGroup>
-            <Button size="small" type="primary">
+          <Button.Group>
+            <Button size="small" type="primary ghost">
               编辑
             </Button>
-            <Popconfirm
-              title={
-                <div>
-                  <Title level={4}>此操作不可逆，请慎重！！！</Title>
-                  <Text>
-                    确定要删除文章《
-                    <span style={{ color: "red" }}>{record.title}》</span>吗？
-                  </Text>
-                </div>
-              }
-              okText="删除"
-              cancelText="取消"
-              onConfirm={() => handleDelete(record.id)}
+            <Button
+              size="small"
+              type="danger"
+              onClick={() => showDelete(record)}
             >
-              <Button size="small" type="danger">
-                删除
-              </Button>
-            </Popconfirm>
-          </ButtonGroup>
+              删除
+            </Button>
+          </Button.Group>
         );
       }
     };
   };
+  // 显示弹窗
+  const showDelete = record => {
+    setArticle(record);
+    setModalVisible(true);
+  };
   // 确认删除
-  const handleDelete = id => {
-    deleteArticle(id)
-      .then(res => message.success(res.msg))
-      .catch(err => {});
+  const handleDelete = () => {
+    setModalLoading(true);
+    deleteArticle(article.id)
+      .then(res => {
+        message.success(res.msg);
+        // 刷新数据， 回到首页
+        setOffset(0);
+      })
+      .catch(err => {})
+      .finally(() => {
+        setModalLoading(false);
+        setModalVisible(false);
+      });
   };
   const getColumns = list => {
     return [...getDataColumns(list), getActionColumn()];
@@ -172,28 +168,40 @@ const ArticleList = () => {
       });
   }, [offset]);
   return (
-    <Card
-      title="文章列表"
-      extra={<Button onClick={onToExcel}>导出为excel</Button>}
-      bordered={false}
-    >
-      <Table
-        rowKey={record => record.id}
-        loading={loading}
-        dataSource={dataSource}
-        columns={columns}
-        pagination={{
-          total,
-          current: offset / limited + 1,
-          // pageSize: limited,
-          hideOnSinglePage: true,
-          showQuickJumper: true,
-          showSizeChanger: true,
-          onChange: onPageChange,
-          onShowSizeChange: onPageSizeChange
-        }}
-      />
-    </Card>
+    <>
+      <Card
+        title="文章列表"
+        extra={<Button onClick={onToExcel}>导出为excel</Button>}
+        bordered={false}
+      >
+        <Table
+          rowKey={record => record.id}
+          loading={loading}
+          dataSource={dataSource}
+          columns={columns}
+          pagination={{
+            total,
+            current: offset / limited + 1,
+            // pageSize: limited,
+            hideOnSinglePage: true,
+            showQuickJumper: true,
+            showSizeChanger: true,
+            onChange: onPageChange,
+            onShowSizeChange: onPageSizeChange
+          }}
+        />
+      </Card>
+
+      <Modal
+        visible={modalVisible}
+        title="此操作不可逆，请谨慎！！！"
+        confirmLoading={modalLoading}
+        onOk={handleDelete}
+        onCancel={() => setModalVisible(false)}
+      >
+        确定删除《<span style={{ color: "red" }}>{article.title}</span>》吗？
+      </Modal>
+    </>
   );
 };
 
