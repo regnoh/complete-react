@@ -88,7 +88,7 @@ const ArticleList = () => {
     // setOffset((current - 1) * size);
   };
   // xlsx react demo : https://github.com/SheetJS/js-xlsx/blob/b0d18ed6dbedaeb83fc9c79edfd564a6d6adcc6d/demos/react/sheetjs.jsx
-  const exportFile = data => {
+  const exportFile = (data, filename) => {
     /* convert state to workbook */
 
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -99,12 +99,17 @@ const ArticleList = () => {
 
     /* generate XLSX file and send to client */
 
-    XLSX.writeFile(wb, "sheetjs.xlsx");
+    XLSX.writeFile(wb, filename);
   };
   const onToExcel = () => {
     // 实际项目中，是由前端发送ajax请求，由后端返回一个文件下载地址
     // 这里用xlsx包来测试前端表格下载
-    exportFile([["a", "b"], [1, 2]]);
+    const data = [["a", "b"], [1, 2]];
+    // 文件名
+    const filename = `yf-articles-${offset / limited + 1}-${dayjs().format(
+      "YYYYMMDDhhmmss"
+    )}.xlsx`;
+    exportFile(data, filename);
   };
   useEffect(() => {
     setLoading(true);
