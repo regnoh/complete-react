@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Table, Tag } from "antd";
+import dayjs from "dayjs";
+// import moment from "moment";// 235.4k
 import { fetchArticles } from "../../services/articles";
 const ArticleList = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -54,7 +56,8 @@ const ArticleList = () => {
     return list.map(item => ({
       key: item.id,
       ...item,
-      createAt: new Date(item.createAt).getFullYear()
+      createAt: dayjs(item.createAt).format("YYYY-MM-DD")
+      // createAt: new Date(item.createAt).getFullYear()
     }));
   };
 
