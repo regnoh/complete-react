@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Button, Table, Tag } from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
+import XLSX from "xlsx";
 import { fetchArticles } from "../../services/articles";
 import ButtonGroup from "antd/lib/button/button-group";
 // 将dayjs挂载到window上，便于在浏览器console直接使用dayjs
@@ -86,6 +87,25 @@ const ArticleList = () => {
     // 刷新当前页
     // setOffset((current - 1) * size);
   };
+  // xlsx react demo : https://github.com/SheetJS/js-xlsx/blob/b0d18ed6dbedaeb83fc9c79edfd564a6d6adcc6d/demos/react/sheetjs.jsx
+  const exportFile = data => {
+    /* convert state to workbook */
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+
+    const wb = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+
+    /* generate XLSX file and send to client */
+
+    XLSX.writeFile(wb, "sheetjs.xlsx");
+  };
+  const onToExcel = () => {
+    // 实际项目中，是由前端发送ajax请求，由后端返回一个文件下载地址
+    // 这里用xlsx包来测试前端表格下载
+    exportFile([["a", "b"], [1, 2]]);
+  };
   useEffect(() => {
     setLoading(true);
     fetchArticles(offset, limited)
@@ -103,7 +123,7 @@ const ArticleList = () => {
   return (
     <Card
       title="文章列表"
-      extra={<Button>导出为excel</Button>}
+      extra={<Button onClick={onToExcel}>导出为excel</Button>}
       bordered={false}
     >
       <Table
