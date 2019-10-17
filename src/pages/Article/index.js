@@ -1,60 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button, Table } from "antd";
-const dataSource = [
-  {
-    key: "1",
-    name: "胡彦斌",
-    age: 32,
-    address: "西湖区湖底公园1号"
-  },
-  {
-    key: "2",
-    name: "胡彦祖",
-    age: 42,
-    address: "西湖区湖底公园1号"
-  }
-]; // 配置国际化后 no data -> 暂无数据
-
-const columns = [
-  {
-    title: "姓名",
-    dataIndex: "name",
-    key: "name"
-  },
-  {
-    title: "年龄",
-    dataIndex: "age",
-    key: "age"
-  },
-  {
-    title: "住址",
-    dataIndex: "address",
-    key: "address"
-  },
-  {
-    title: "操作",
-    dataIndex: "action",
-    key: "action",
-    render: (text, record, index) => {
-      // console.log("renderProps: ", { text, record, index });
-      return <Button>编辑</Button>;
-    }
-  }
-];
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: record => ({
-    // disabled: record.name === "Disabled User", // Column configuration not to be checked
-    name: record.name
-  })
-};
+import { fetchArticles } from "../../services/articles";
 const ArticleList = () => {
+  const [dataSource, setDataSource] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [total, setTotal] = useState(0);
+  const getColumns = list => {
+    const keys = Object.keys(list[0]).filter(key => key !== "id");
+    const columns = [
+      ...keys.map(key => ({
+        title: key,
+        name: key,
+        dataIndex: key
+      })),
+      {
+        title: "action",
+        dataIndex: "action",
+        key: "action",
+        render: (text, record, index) => {
+          return <Button>编辑</Button>;
+        }
+      }
+    ];
+    return columns;
+  };
+  const getDataSource = list => {
+    return list.map(({ id, title, author, createAt, amount }) => ({
+      key: id,
+      title,
+      author,
+      createAt: new Date(createAt).getFullYear(),
+      amount
+    }));
+  };
+
+  useEffect(() => {
+    fetchArticles().then(res => {
+      // console.log("res ", res);
+      setTotal(res.total);
+      setDataSource(getDataSource(res.list));
+      setColumns(getColumns(res.list));
+    });
+  }, []);
   return (
     <Card
       title="文章列表"
@@ -62,13 +49,12 @@ const ArticleList = () => {
       bordered={false}
     >
       <Table
-        // loading={true}
+        loading={dataSource.length === 0}
         dataSource={dataSource}
         columns={columns}
-        rowSelection={rowSelection}
         pagination={{
-          total: 20,
-          pageSize: 10
+          total,
+          hideOnSinglePage: true
         }}
       />
     </Card>
