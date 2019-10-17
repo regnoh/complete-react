@@ -75,12 +75,16 @@ const ArticleList = () => {
     }));
   };
   const onPageChange = (page, pageSize) => {
-    console.log("ArticleList -> page, pageSize", page, pageSize);
+    // console.log("ArticleList -> page, pageSize", page, pageSize);
     setOffset((page - 1) * pageSize);
   };
   const onPageSizeChange = (current, size) => {
-    console.log("onPageSizeChange -> current, size", current, size);
+    // console.log("onPageSizeChange -> current, size", current, size);
     setLimited(size);
+    // 重回首页
+    setOffset(0);
+    // 刷新当前页
+    // setOffset((current - 1) * size);
   };
   useEffect(() => {
     setLoading(true);
@@ -95,7 +99,7 @@ const ArticleList = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [offset, limited]);
+  }, [offset]);
   return (
     <Card
       title="文章列表"
@@ -109,6 +113,7 @@ const ArticleList = () => {
         columns={columns}
         pagination={{
           total,
+          current: offset / limited + 1,
           pageSize: limited,
           hideOnSinglePage: true,
           showQuickJumper: true,
