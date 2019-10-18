@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   Button,
@@ -11,18 +10,22 @@ import {
   Spin
 } from "antd";
 import moment from "moment";
+import E from "wangeditor";
 import { fetchArticle, updateArticle } from "../../services/articles";
+import "./edit.less";
 const Edit = props => {
   const { form, match, history } = props;
   const { getFieldDecorator } = form;
   const [spinning, setSpinning] = useState(false);
+  const contentRef = useRef(null);
   useEffect(() => {
     // console.log(props);
-
+    // console.log("wangEditor", E);
+    // console.log("contentRef", contentRef);
     setSpinning(true);
     fetchArticle(match.params.id)
       .then(res => {
-        // message.success(res.title);
+        initEditor(res.content);
         form.setFieldsValue({
           ...res,
           createAt: moment(res.createAt)
@@ -30,6 +33,19 @@ const Edit = props => {
       })
       .finally(() => setSpinning(false));
   }, []);
+  // wangeditor3富文本编辑器开发文档： https://www.kancloud.cn/wangfupeng/wangeditor3/332599
+  const initEditor = editorContent => {
+    const editor = new E(contentRef.current); // 指定挂载editor的dom
+    editor.customConfig.onchange = html => {
+      // console.log("TCL: html", html);
+      // 监控变化，同步更新
+      form.setFieldsValue({
+        content: html
+      });
+    };
+    editor.create();
+    editor.txt.html(editorContent); // 初始值
+  };
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
@@ -114,6 +130,16 @@ const Edit = props => {
                 }
               ]
             })(<DatePicker showTime />)}
+          </Form.Item>
+          <Form.Item label="内容">
+            {getFieldDecorator("content", {
+              rules: [
+                {
+                  required: true,
+                  message: "请填写内容!"
+                }
+              ]
+            })(<div className="qf-editor" ref={contentRef} />)}
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
