@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Row, Col } from "antd";
+import { fetchAmounts } from "../../services/articles";
 import "./index.less";
 const Dashboard = () => {
+  useEffect(() => {
+    fetchAmounts().then(res => {
+      console.log("TCL: Dashboard -> res", res);
+    });
+  }, []);
   // 生成随机16进制颜色： https://www.jianshu.com/p/54fc0fce46cc
-  const getRandomColor = () => {
-    return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
-  };
+  // const getRandomColor = () => {
+  //   return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
+  // };
   // material design colors: https://www.materialui.co/colors
   const overViewData = [
     { id: 1, bgColor: "#F8BBD0", title: "文章总数", value: 188 },
@@ -27,6 +33,9 @@ const Dashboard = () => {
             );
           })}
         </Row>
+      </Card>
+      <Card title="浏览量统计" bordered={false}>
+        图表
       </Card>
     </>
   );

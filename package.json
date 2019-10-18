@@ -9,6 +9,7 @@
     "babel-plugin-import": "^1.12.2",
     "customize-cra": "^0.8.0",
     "dayjs": "^1.8.16",
+    "echarts": "^4.4.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "moment": "^2.24.0",

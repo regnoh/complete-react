@@ -44,3 +44,7 @@ export const fetchArticle = id => {
 export const updateArticle = (id, values) => {
   return service.put(`/api/v1/articles/${id}`, values);
 };
+// 近6个月的浏览量统计
+export const fetchAmounts = () => {
+  return service.post(`/api/v1/articles/amount`);
+};

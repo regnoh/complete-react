@@ -24,13 +24,12 @@ export const adminRoutes = [
     component: ArticleList,
     exact: true,
     icon: "unordered-list",
-    title: "文章列表",
+    title: "文章管理",
     isNav: true
   },
   {
     path: "/admin/article/edit/:id",
     component: ArticleEdit,
-    title: "文章编辑",
     isNav: false
   },
   {
