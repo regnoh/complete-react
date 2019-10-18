@@ -38,3 +38,9 @@ export const fetchArticles = (offset = 0, limited = 10) => {
 export const deleteArticle = id => {
   return service.delete(`/api/v1/articles/${id}`);
 };
+export const fetchArticle = id => {
+  return service.post(`/api/v1/articles/${id}`);
+};
+export const updateArticle = (id, values) => {
+  return service.put(`/api/v1/articles/${id}`, values);
+};

@@ -21,7 +21,7 @@ const ArticleList = () => {
     id: "id",
     title: "标题",
     author: "作者",
-    createAt: "时间",
+    createAt: "发布时间",
     amount: "阅读量"
   };
   const getColumTitle = key => {
