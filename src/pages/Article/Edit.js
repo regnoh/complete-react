@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Form, Input } from "antd";
-const Edit = () => {
+const Edit = ({ form }) => {
   // const toBack = () => {};
   const formItemLayout = {
     labelCol: {
@@ -27,6 +27,11 @@ const Edit = () => {
   };
   const handleSubmit = e => {
     e.preventDefault();
+    form.validateFields((err, values) => {
+      if (!err) {
+        // console.log("Received values of form: ", values);
+      }
+    });
   };
   return (
     <Card
@@ -40,7 +45,9 @@ const Edit = () => {
     >
       <Form {...formItemLayout} onSubmit={handleSubmit}>
         <Form.Item label="标题">
-          <Input placeholder="标题" />
+          {form.getFieldDecorator("title", {
+            rules: [{ required: true, message: "请输入文章标题!" }]
+          })(<Input placeholder="标题" />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
@@ -51,5 +58,6 @@ const Edit = () => {
     </Card>
   );
 };
-
-export default Edit;
+// export default Edit;
+// 获取props.form
+export default Form.create()(Edit);
