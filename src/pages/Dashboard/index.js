@@ -7,12 +7,12 @@ const Dashboard = () => {
   const amountChartRef = useRef(null);
   const [spinning, setSpinning] = useState(false);
   useEffect(() => {
+    const amountChart = echarts.init(amountChartRef.current);
     setSpinning(true);
     fetchAmounts()
       .then(res => {
         setSpinning(false);
         // console.log("TCL: Dashboard -> res", res);
-        const amountChart = echarts.init(amountChartRef.current);
         amountChart.setOption({
           title: {
             text: "2019年上半年文章浏览量统计"

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu, Icon, Dropdown } from "antd";
 import { adminRoutes } from "../../routes";
 import logo from "./logo.png";
 import "./index.less";
@@ -14,11 +14,34 @@ const Frame = ({ children, location }) => {
   selectedKeys = selectedKeys.slice(0, 3).join("/");
   // console.log("TCL: Frame -> selectedKeys", selectedKeys);
   // console.log(location.pathname);
+  const menuList = [
+    { title: "1item", to: "/" },
+    { title: "2item", to: "/" },
+    { title: "3item", to: "/" }
+  ];
+  const menu = (
+    <Menu>
+      {menuList.map(({ title, to }) => {
+        return (
+          <Menu.Item key={title}>
+            <Link to={to}>{title}</Link>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
   return (
     <Layout className="yf-frame">
       <Header className="header yf-header">
         <div className="logo yf-logo">
           <img src={logo} alt="yf" />
+        </div>
+        <div>
+          <Dropdown overlay={menu}>
+            <a className="ant-dropdown-link" href="#">
+              Hover me <Icon type="down" />
+            </a>
+          </Dropdown>
         </div>
       </Header>
       <Layout>
