@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Table, Tag, message, Modal } from "antd";
+import { Link } from "react-router-dom";
+import { Card, Button, Table, Tag, message, Modal, Tooltip } from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
 import XLSX from "xlsx";
@@ -28,9 +29,19 @@ const ArticleList = () => {
     return ARTICLE_COLUMN_ZH_MAP[key];
   };
   const getDataColumns = list => {
-    const keys = Object.keys(list[0]);
+    const keys = Object.keys(list[0]).filter(key => key !== "content");
     const columns = [
       ...keys.map(key => {
+        if (key === "title") {
+          return {
+            title: getColumTitle(key),
+            name: key,
+            dataIndex: key,
+            render: (text, record) => {
+              return <Tooltip title={record.content}>{record.title}</Tooltip>;
+            }
+          };
+        }
         if (key === "amount") {
           return {
             title: getColumTitle(key),
@@ -62,7 +73,19 @@ const ArticleList = () => {
         return (
           <Button.Group>
             <Button size="small" type="primary ghost">
-              编辑
+              {/* id->props.match.params.id->getArticleById */}
+              <Link to={`/admin/article/edit/${record.id}`}>编辑</Link>
+              {/* 跳转到Edit页面，携带state->props.location.state */}
+              {/* <Link
+                to={{
+                  pathname: `/admin/article/edit/${record.id}`,
+                  state: {
+                    title: record.title
+                  }
+                }}
+              >
+                编辑
+              </Link> */}
             </Button>
             <Button
               size="small"

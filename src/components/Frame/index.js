@@ -10,7 +10,7 @@ const { Header, Content, Sider } = Layout;
 // antd - layout - less修改样式
 const Frame = ({ children, location }) => {
   const navRoutes = adminRoutes.filter(r => r.isNav);
-  console.log(location.pathname);
+  // console.log(location.pathname);
   return (
     <Layout className="yf-frame">
       <Header className="header yf-header">
