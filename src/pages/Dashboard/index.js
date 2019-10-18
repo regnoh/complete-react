@@ -1,13 +1,40 @@
-import React, { useEffect } from "react";
-import { Card, Row, Col } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { Card, Row, Col, Spin } from "antd";
 import { fetchAmounts } from "../../services/articles";
+import echarts from "echarts";
 import "./index.less";
 const Dashboard = () => {
+  const amountChartRef = useRef(null);
+  const [spinning, setSpinning] = useState(false);
   useEffect(() => {
-    fetchAmounts().then(res => {
-      console.log("TCL: Dashboard -> res", res);
-    });
+    setSpinning(true);
+    fetchAmounts()
+      .then(res => {
+        setSpinning(false);
+        // console.log("TCL: Dashboard -> res", res);
+        const amountChart = echarts.init(amountChartRef.current);
+        amountChart.setOption({
+          title: {
+            text: "2019年上半年文章浏览量统计"
+          },
+          tooltip: {},
+          xAxis: {
+            data: res.map(item => item.month)
+          },
+          yAxis: {},
+          series: [
+            {
+              type: "bar",
+              data: res.map(item => item.value)
+            }
+          ]
+        });
+      })
+      .finally(() => {
+        setSpinning(false);
+      });
   }, []);
+
   // 生成随机16进制颜色： https://www.jianshu.com/p/54fc0fce46cc
   // const getRandomColor = () => {
   //   return "#" + ((Math.random() * 0xffffff) << 0).toString(16);
@@ -35,7 +62,9 @@ const Dashboard = () => {
         </Row>
       </Card>
       <Card title="浏览量统计" bordered={false}>
-        图表
+        <Spin spinning={spinning}>
+          <div ref={amountChartRef} style={{ height: 200 }} />
+        </Spin>
       </Card>
     </>
   );
