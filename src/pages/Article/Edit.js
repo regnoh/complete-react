@@ -29,9 +29,13 @@ const Edit = ({ form }) => {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
-        // FIXME: DataPicker 返回时间需要格式化为时间戳
-        // {title："哈哈", author: "刘阿达", createAt: Moment}
+        // console.log("Received values of form: ", values); // {title："哈哈", author: "刘阿达", createAt: Moment}
+        const formatedValues = {
+          ...values,
+          createAt: values["createAt"].valueOf() // Moment -> 1571362043744
+          // createAt: values["createAt"].format("YYYY-MM-DD HH:mm:ss") // Moment -> 2019-01-10 09:28:57
+        };
+        console.log("Formated values of form: ", formatedValues);
       }
     });
   };
