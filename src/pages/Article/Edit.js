@@ -28,7 +28,7 @@ const Edit = props => {
         initEditor(res.content);
         form.setFieldsValue({
           ...res,
-          createAt: moment(res.createAt)
+          createAt: moment(res.createAt) // 接口返回timeStamp -> Moment: DatePicker产生、接收的数据类型需为Moment
         });
       })
       .finally(() => setSpinning(false));
@@ -75,7 +75,7 @@ const Edit = props => {
         // console.log("Received values of form: ", values); // {title："哈哈", author: "刘阿达", createAt: Moment}
         const formatedValues = {
           ...values,
-          createAt: values["createAt"].valueOf() // Moment -> 1571362043744
+          createAt: values["createAt"].valueOf() // Moment -> timestamp, DatePicker产生的数据需要转化为timeStamp,再给后端接口
           // createAt: values["createAt"].format("YYYY-MM-DD HH:mm:ss") // Moment -> 2019-01-10 09:28:57
         };
         // console.log("Formated values of form: ", formatedValues);
