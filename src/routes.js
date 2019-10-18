@@ -4,7 +4,8 @@ import {
   Dashboard,
   ArticleList,
   ArticleEdit,
-  Settings
+  Settings,
+  Notifications
 } from "./pages";
 export const mainRoutes = [
   { path: "/login", component: Login },
@@ -29,14 +30,19 @@ export const adminRoutes = [
   },
   {
     path: "/admin/article/edit/:id",
-    component: ArticleEdit,
-    isNav: false
+    component: ArticleEdit
   },
   {
     path: "/admin/settings",
     component: Settings,
     icon: "setting",
     title: "设置",
+    exact: true,
     isNav: true
+  },
+  {
+    path: "/admin/notifications",
+    component: Notifications,
+    exact: true
   }
 ];

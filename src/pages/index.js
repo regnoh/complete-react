@@ -28,9 +28,21 @@ const Settings = Loadable({
   loader: () => import("./Settings"),
   loading: Loading
 });
+const Notifications = Loadable({
+  loader: () => import("./Notifications"),
+  loading: Loading
+});
 const NotFound = Loadable({
   loader: () => import("./NotFound"),
   loading: Loading
 });
 
-export { Login, Dashboard, ArticleList, ArticleEdit, Settings, NotFound };
+export {
+  Login,
+  Dashboard,
+  ArticleList,
+  ArticleEdit,
+  Settings,
+  Notifications,
+  NotFound
+};

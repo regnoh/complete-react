@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Layout, Menu, Icon, Dropdown } from "antd";
+import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from "antd";
 import { adminRoutes } from "../../routes";
 import logo from "./logo.png";
 import "./index.less";
@@ -12,22 +12,17 @@ const Frame = ({ children, location }) => {
   const navRoutes = adminRoutes.filter(r => r.isNav);
   let selectedKeys = location.pathname.split("/");
   selectedKeys = selectedKeys.slice(0, 3).join("/");
-  // console.log("TCL: Frame -> selectedKeys", selectedKeys);
-  // console.log(location.pathname);
-  const menuList = [
-    { title: "1item", to: "/" },
-    { title: "2item", to: "/" },
-    { title: "3item", to: "/" }
-  ];
   const menu = (
-    <Menu>
-      {menuList.map(({ title, to }) => {
-        return (
-          <Menu.Item key={title}>
-            <Link to={to}>{title}</Link>
-          </Menu.Item>
-        );
-      })}
+    <Menu style={{ textAlign: "center" }}>
+      <Menu.Item>
+        <Badge dot>
+          <Link to="/admin/notifications">通知中心</Link>
+        </Badge>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="/admin/settings">个人设置</Link>
+      </Menu.Item>
+      <Menu.Item>退出登录</Menu.Item>
     </Menu>
   );
   return (
@@ -38,9 +33,11 @@ const Frame = ({ children, location }) => {
         </div>
         <div>
           <Dropdown overlay={menu}>
-            <a className="ant-dropdown-link" href="#">
-              Hover me <Icon type="down" />
-            </a>
+            <Badge count={12}>
+              <Avatar src={logo} />
+              <span>欢迎！菲菲 </span>
+              <Icon type="down" />
+            </Badge>
           </Dropdown>
         </div>
       </Header>
