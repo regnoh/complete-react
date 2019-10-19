@@ -37,12 +37,10 @@ export const adminRoutes = [
     component: Settings,
     icon: "setting",
     title: "设置",
-    exact: true,
     isNav: true
   },
   {
     path: "/admin/notifications",
-    component: Notifications,
-    exact: true
+    component: Notifications
   }
 ];

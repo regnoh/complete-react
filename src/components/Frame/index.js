@@ -1,30 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from "antd";
+import { connect } from "react-redux";
 import { adminRoutes } from "../../routes";
 import logo from "./logo.png";
 import "./index.less";
 import { withRouter } from "react-router-dom";
+import { getNotifications } from "../../actions/notifications";
 const { Header, Content, Sider } = Layout;
 // 在线制作logo: http://www.uugai.com/
 // antd - layout - less修改样式
-const Frame = ({ children, location }) => {
+
+const Frame = ({ children, location, unReadCount, getNotifications }) => {
+  useEffect(() => {
+    // 实际项目应该由后端推送通知信息，这里模拟1min获取1次数据
+    getNotifications();
+    setInterval(() => {
+      getNotifications();
+    }, 60000);
+  }, []);
   const navRoutes = adminRoutes.filter(r => r.isNav);
   let selectedKeys = location.pathname.split("/");
   selectedKeys = selectedKeys.slice(0, 3).join("/");
-  const menu = (
-    <Menu style={{ textAlign: "center" }}>
-      <Menu.Item>
-        <Badge dot>
-          <Link to="/admin/notifications">通知中心</Link>
-        </Badge>
-      </Menu.Item>
-      <Menu.Item>
-        <Link to="/admin/settings">个人设置</Link>
-      </Menu.Item>
-      <Menu.Item>退出登录</Menu.Item>
-    </Menu>
-  );
+  const renderMenu = () => {
+    return (
+      <Menu style={{ textAlign: "center" }}>
+        <Menu.Item>
+          <Badge dot={unReadCount > 0}>
+            <Link to="/admin/notifications">通知中心</Link>
+          </Badge>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to="/admin/settings">个人设置</Link>
+        </Menu.Item>
+        <Menu.Item>退出登录</Menu.Item>
+      </Menu>
+    );
+  };
   return (
     <Layout className="yf-frame">
       <Header className="header yf-header">
@@ -32,8 +44,8 @@ const Frame = ({ children, location }) => {
           <img src={logo} alt="yf" />
         </div>
         <div>
-          <Dropdown overlay={menu}>
-            <Badge count={12}>
+          <Dropdown overlay={renderMenu()}>
+            <Badge count={unReadCount} overflowCount={99}>
               <Avatar src={logo} />
               <span>欢迎！菲菲 </span>
               <Icon type="down" />
@@ -77,4 +89,11 @@ const Frame = ({ children, location }) => {
     </Layout>
   );
 };
-export default withRouter(Frame);
+const mapStateToProps = ({ notifications }) => ({
+  unReadCount: notifications.list.filter(item => !item.hasRead).length
+});
+
+export default connect(
+  mapStateToProps,
+  { getNotifications }
+)(withRouter(Frame));
