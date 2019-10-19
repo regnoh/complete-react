@@ -5,7 +5,8 @@ import {
   ArticleList,
   ArticleEdit,
   Settings,
-  Notifications
+  Notifications,
+  NoAuth
 } from "./pages";
 export const mainRoutes = [
   { path: "/login", component: Login },
@@ -42,5 +43,9 @@ export const adminRoutes = [
   {
     path: "/admin/notifications",
     component: Notifications
+  },
+  {
+    path: "/admin/noauth",
+    component: NoAuth
   }
 ];

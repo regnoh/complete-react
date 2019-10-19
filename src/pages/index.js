@@ -36,6 +36,10 @@ const NotFound = Loadable({
   loader: () => import("./NotFound"),
   loading: Loading
 });
+const NoAuth = Loadable({
+  loader: () => import("./NoAuth"),
+  loading: Loading
+});
 
 export {
   Login,
@@ -44,5 +48,6 @@ export {
   ArticleEdit,
   Settings,
   Notifications,
-  NotFound
+  NotFound,
+  NoAuth
 };
