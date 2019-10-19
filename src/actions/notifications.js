@@ -1,5 +1,5 @@
 import actionTypes from "./types";
-import { fetchNotifications } from "../services/notifications";
+import { fetchNotifications } from "../services";
 export const getNotifications = () => dispatch => {
   dispatch({ type: actionTypes.GET_NOTIFICATIONS_REQUEST });
   fetchNotifications()

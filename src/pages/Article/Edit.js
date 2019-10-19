@@ -11,7 +11,7 @@ import {
 } from "antd";
 import moment from "moment";
 import E from "wangeditor";
-import { fetchArticle, updateArticle } from "../../services/articles";
+import { fetchArticle, updateArticle } from "../../services";
 import "./edit.less";
 const Edit = props => {
   const { form, match, history } = props;

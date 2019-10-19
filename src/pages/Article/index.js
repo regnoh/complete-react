@@ -4,7 +4,7 @@ import { Card, Button, Table, Tag, message, Modal, Tooltip } from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
 import XLSX from "xlsx";
-import { fetchArticles, deleteArticle } from "../../services/articles";
+import { fetchArticles, deleteArticle } from "../../services";
 // 将dayjs挂载到window上，便于在浏览器console直接使用dayjs
 // window.dayjs = dayjs;
 const ArticleList = () => {
@@ -185,7 +185,7 @@ const ArticleList = () => {
         setDataSource(getDataSource(res.list));
         setColumns(getColumns(res.list));
       })
-      .catch(err => {}) // services/articles.js全局处理过了
+      .catch(err => {}) // services全局处理过了
       .finally(() => {
         setLoading(false);
       });

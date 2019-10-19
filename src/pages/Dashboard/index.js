@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, Row, Col, Spin } from "antd";
-import { fetchAmounts } from "../../services/articles";
+import { fetchAmounts } from "../../services";
 import echarts from "echarts";
 import "./index.less";
 const Dashboard = () => {

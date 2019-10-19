@@ -1,11 +1,12 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import { adminRoutes } from "./routes";
 import { Frame } from "./components";
 
 // import { HocWrappedComp, TestAntd } from "./tests";
-const App = () => {
-  return (
+const App = ({ isLogin }) => {
+  return isLogin ? (
     <Frame>
       <Switch>
         {adminRoutes.map(({ path, exact, component: Component }) => {
@@ -24,7 +25,12 @@ const App = () => {
         <Redirect to="/404" />
       </Switch>
     </Frame>
+  ) : (
+    <Redirect to="/login" />
   );
 };
+const mapStateToProps = state => ({
+  isLogin: state.user.isLogin
+});
 
-export default App;
+export default connect(mapStateToProps)(App);

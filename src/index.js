@@ -19,13 +19,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route
-            path="/admin"
-            render={routeProps => {
-              // TODO: 权限， 需要登录才能访问/admin
-              return <App {...routeProps} />;
-            }}
-          />
+          <Route path="/admin" component={App} />
           {mainRoutes.map(r => {
             return <Route key={r.path} {...r} />;
           })}
