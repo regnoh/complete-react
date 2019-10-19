@@ -18,9 +18,9 @@ service.interceptors.request.use(config => {
   // 每个请求都带上token
   config.data = {
     ...config.data,
-    // TODO: 登录功能未实现
-    authToken: localStorage.getItem("authToken")
-    // authToken: "asdasas"
+
+    authToken:
+      localStorage.getItem("authToken") || sessionStorage.getItem("authToken")
   };
   return config;
 });

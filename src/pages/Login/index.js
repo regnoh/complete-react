@@ -83,7 +83,7 @@ const Login = ({ form, login, isLoading, isLogin }) => {
                   valuePropName: "checked",
                   initialValue: true
                 })(<Checkbox>Remember me</Checkbox>)}
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" block>
                   登录
                 </Button>
               </Form.Item>

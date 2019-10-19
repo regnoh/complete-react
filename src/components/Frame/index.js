@@ -7,11 +7,20 @@ import logo from "./logo.png";
 import "./index.less";
 import { withRouter } from "react-router-dom";
 import { getNotifications } from "../../actions/notifications";
+import { logout } from "../../actions/user";
 const { Header, Content, Sider } = Layout;
 // 在线制作logo: http://www.uugai.com/
 // antd - layout - less修改样式
 
-const Frame = ({ children, location, unReadCount, getNotifications }) => {
+const Frame = props => {
+  const {
+    children,
+    location,
+    unReadCount,
+    getNotifications,
+    user,
+    logout
+  } = props;
   useEffect(() => {
     // 实际项目应该由后端推送通知信息，这里模拟1min获取1次数据
     getNotifications();
@@ -22,6 +31,7 @@ const Frame = ({ children, location, unReadCount, getNotifications }) => {
   const navRoutes = adminRoutes.filter(r => r.isNav);
   let selectedKeys = location.pathname.split("/");
   selectedKeys = selectedKeys.slice(0, 3).join("/");
+
   const renderMenu = () => {
     return (
       <Menu style={{ textAlign: "center" }}>
@@ -33,7 +43,8 @@ const Frame = ({ children, location, unReadCount, getNotifications }) => {
         <Menu.Item>
           <Link to="/admin/settings">个人设置</Link>
         </Menu.Item>
-        <Menu.Item>退出登录</Menu.Item>
+
+        <Menu.Item onClick={logout}>退出登录</Menu.Item>
       </Menu>
     );
   };
@@ -46,8 +57,8 @@ const Frame = ({ children, location, unReadCount, getNotifications }) => {
         <div>
           <Dropdown overlay={renderMenu()}>
             <Badge count={unReadCount} overflowCount={99}>
-              <Avatar src={logo} />
-              <span>欢迎！菲菲 </span>
+              <Avatar src={user.avatar} />
+              <span style={{ marginLeft: 5 }}>欢迎！{user.nickname} </span>
               <Icon type="down" />
             </Badge>
           </Dropdown>
@@ -89,11 +100,12 @@ const Frame = ({ children, location, unReadCount, getNotifications }) => {
     </Layout>
   );
 };
-const mapStateToProps = ({ notifications }) => ({
-  unReadCount: notifications.list.filter(item => !item.hasRead).length
+const mapStateToProps = ({ notifications, user }) => ({
+  unReadCount: notifications.list.filter(item => !item.hasRead).length,
+  user: user.user
 });
 
 export default connect(
   mapStateToProps,
-  { getNotifications }
+  { getNotifications, logout }
 )(withRouter(Frame));
