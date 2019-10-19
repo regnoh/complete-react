@@ -40,6 +40,10 @@ const NoAuth = Loadable({
   loader: () => import("./NoAuth"),
   loading: Loading
 });
+const Profile = Loadable({
+  loader: () => import("./Profile"),
+  loading: Loading
+});
 
 export {
   Login,
@@ -49,5 +53,6 @@ export {
   Settings,
   Notifications,
   NotFound,
-  NoAuth
+  NoAuth,
+  Profile
 };

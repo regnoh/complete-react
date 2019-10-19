@@ -22,11 +22,11 @@ const Frame = props => {
     logout
   } = props;
   useEffect(() => {
-    // 实际项目应该由后端推送通知信息，这里模拟1min获取1次数据
+    // 实际项目应该由后端推送通知信息，这里模拟10min获取1次数据
     getNotifications();
     setInterval(() => {
       getNotifications();
-    }, 60000);
+    }, 600000);
   }, []);
   const navRoutes = adminRoutes.filter(r => r.isNav);
   let selectedKeys = location.pathname.split("/");
@@ -41,7 +41,7 @@ const Frame = props => {
           </Badge>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/admin/settings">个人设置</Link>
+          <Link to="/admin/profile">个人中心</Link>
         </Menu.Item>
 
         <Menu.Item onClick={logout}>退出登录</Menu.Item>

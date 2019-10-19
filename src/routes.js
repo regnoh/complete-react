@@ -6,7 +6,8 @@ import {
   ArticleEdit,
   Settings,
   Notifications,
-  NoAuth
+  NoAuth,
+  Profile
 } from "./pages";
 export const mainRoutes = [
   { path: "/login", component: Login },
@@ -19,7 +20,8 @@ export const adminRoutes = [
     exact: true,
     icon: "dashboard",
     title: "看板",
-    isNav: true
+    isNav: true,
+    roles: ["001", "002", "003"] // 管理员，用户，游客
   },
   {
     path: "/admin/article",
@@ -27,25 +29,35 @@ export const adminRoutes = [
     exact: true,
     icon: "unordered-list",
     title: "文章管理",
-    isNav: true
+    isNav: true,
+    roles: ["001", "002"]
   },
   {
     path: "/admin/article/edit/:id",
-    component: ArticleEdit
+    component: ArticleEdit,
+    roles: ["001"]
   },
   {
     path: "/admin/settings",
     component: Settings,
     icon: "setting",
     title: "设置",
-    isNav: true
+    isNav: true,
+    roles: ["001"]
   },
   {
     path: "/admin/notifications",
-    component: Notifications
+    component: Notifications,
+    roles: ["001", "002"]
   },
   {
     path: "/admin/noauth",
-    component: NoAuth
+    component: NoAuth,
+    roles: ["001", "002", "003"]
+  },
+  {
+    path: "/admin/profile",
+    component: Profile,
+    roles: ["001", "002"]
   }
 ];

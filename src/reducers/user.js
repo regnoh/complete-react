@@ -1,14 +1,20 @@
 import actionTypes from "../actions/types";
-const isLogin =
-  Boolean(localStorage.getItem("authToken")) ||
-  Boolean(sessionStorage.getItem("authToken"));
-const user = JSON.parse(
-  localStorage.getItem("user") || sessionStorage.getItem("user")
-);
+
+const initState = () => {
+  const isLogin =
+    Boolean(localStorage.getItem("authToken")) ||
+    Boolean(sessionStorage.getItem("authToken"));
+  const user = JSON.parse(
+    localStorage.getItem("user") || sessionStorage.getItem("user")
+  );
+  return {
+    isLoading: false,
+    isLogin,
+    user
+  };
+};
 const initialState = {
-  isLoading: false,
-  isLogin,
-  user
+  ...initState()
 };
 
 export default (state = initialState, { type, payload }) => {

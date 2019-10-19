@@ -5,17 +5,24 @@ import { adminRoutes } from "./routes";
 import { Frame } from "./components";
 
 // import { HocWrappedComp, TestAntd } from "./tests";
-const App = ({ isLogin }) => {
+const App = ({ isLogin, user }) => {
   return isLogin ? (
     <Frame>
       <Switch>
-        {adminRoutes.map(({ path, exact, component: Component }) => {
+        {adminRoutes.map(({ path, exact, component: Component, roles }) => {
           return (
             <Route
               key={path}
               path={path}
               exact={exact}
-              render={routeProps => <Component {...routeProps} />}
+              render={routeProps => {
+                const hasPermission = roles.includes(user.role);
+                return hasPermission ? (
+                  <Component {...routeProps} />
+                ) : (
+                  <Redirect to="/admin/noauth" />
+                );
+              }}
             />
           );
         })}
@@ -29,8 +36,9 @@ const App = ({ isLogin }) => {
     <Redirect to="/login" />
   );
 };
-const mapStateToProps = state => ({
-  isLogin: state.user.isLogin
+const mapStateToProps = ({ user }) => ({
+  isLogin: user.isLogin,
+  user: user.user
 });
 
 export default connect(mapStateToProps)(App);
