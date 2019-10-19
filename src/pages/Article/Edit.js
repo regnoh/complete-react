@@ -27,7 +27,10 @@ const Edit = props => {
       .then(res => {
         initEditor(res.content);
         form.setFieldsValue({
-          ...res,
+          // ...res, // Warning: You cannot set a form field before rendering a field associated with the value.
+          title: res.title, // 修复上述问题，因为res中有id等，不在formField中
+          author: res.author,
+          amount: res.amount,
           createAt: moment(res.createAt) // 接口返回timeStamp -> Moment: DatePicker产生、接收的数据类型需为Moment
         });
       })
@@ -36,6 +39,7 @@ const Edit = props => {
   // wangeditor3富文本编辑器开发文档： https://www.kancloud.cn/wangfupeng/wangeditor3/332599
   const initEditor = editorContent => {
     const editor = new E(contentRef.current); // 指定挂载editor的dom
+    editor.create();
     editor.customConfig.onchange = html => {
       // console.log("TCL: html", html);
       // 监控变化，同步更新
@@ -43,7 +47,6 @@ const Edit = props => {
         content: html
       });
     };
-    editor.create();
     editor.txt.html(editorContent); // 初始值
   };
   const formItemLayout = {
