@@ -1,5 +1,5 @@
 import actionTypes from "./types";
-import { requestLogin } from "../services";
+import { requestLogin, updateUser } from "../services";
 import { message } from "antd";
 export const login = values => dispatch => {
   dispatch({ type: actionTypes.LOGIN_REQUEST });
@@ -33,4 +33,32 @@ export const logout = () => dispatch => {
   localStorage.removeItem("user");
   sessionStorage.removeItem("user");
   dispatch({ type: actionTypes.LOGOUT });
+};
+
+export const editUser = (id, values) => dispatch => {
+  // console.log("...............", id, values);
+  dispatch({ type: actionTypes.EDIT_PROFILE_REQUEST });
+  updateUser(id, values)
+    .then(res => {
+      const localUser = JSON.parse(localStorage.getItem("user"));
+      const sessionUser = JSON.parse(sessionStorage.getItem("user"));
+      localUser
+        ? localStorage.setItem(
+            "user",
+            JSON.stringify({ ...localUser, ...values })
+          )
+        : sessionStorage.setItem(
+            "user",
+            JSON.stringify({ ...sessionUser, ...values })
+          );
+      dispatch({
+        type: actionTypes.EDIT_PROFILE_SUCCESS,
+        payload: { id, values }
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: actionTypes.EDIT_PROFILE_FAILED
+      });
+    });
 };

@@ -26,6 +26,9 @@ service.interceptors.request.use(config => {
 });
 service.interceptors.response.use(res => {
   if (res.data.code === 200) {
+    if (res.data.data.msg) {
+      message.success(res.data.data.msg);
+    }
     return res.data.data;
   } else {
     // 全局处理错误
@@ -60,7 +63,10 @@ export const fetchNotifications = (offset = 0, limited = 10) => {
 const noInterceptService = axios.create({
   baseURL: isDev ? BASE_URL : ""
 });
-const USER_URL = "/api/v1/user/login";
+const USER_URL = "/api/v1/user";
 export const requestLogin = values => {
-  return noInterceptService.post(USER_URL, values);
+  return noInterceptService.post(`${USER_URL}/login`, values);
+};
+export const updateUser = (id, values) => {
+  return service.put(`${USER_URL}/${id}`, values);
 };
