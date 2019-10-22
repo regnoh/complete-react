@@ -4,7 +4,7 @@ import { Card, Button, Table, Tag, message, Modal, Tooltip } from "antd";
 import dayjs from "dayjs";
 // import moment from "moment";// 235.4k
 import XLSX from "xlsx";
-import { fetchArticles, deleteArticle } from "../../services";
+import Api from "../../services";
 // 将dayjs挂载到window上，便于在浏览器console直接使用dayjs
 // window.dayjs = dayjs;
 const ArticleList = () => {
@@ -107,7 +107,7 @@ const ArticleList = () => {
   // 确认删除
   const handleDelete = () => {
     setModalLoading(true);
-    deleteArticle(article.id)
+    Api.deleteArticle(article.id)
       .then(res => {
         message.success(res.msg);
         // 刷新数据， 回到首页
@@ -178,7 +178,7 @@ const ArticleList = () => {
   // TODO: 每次请求获得的数据都固定为10个，如何根据传入的limited修改
   useEffect(() => {
     setLoading(true);
-    fetchArticles(offset, limited)
+    Api.fetchArticles(offset, limited)
       .then(res => {
         // console.log("res ", res);
         setTotal(res.total);

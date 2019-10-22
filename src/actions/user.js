@@ -1,9 +1,9 @@
 import actionTypes from "./types";
-import { requestLogin, updateUser } from "../services";
+import Api from "../services";
 import { message } from "antd";
 export const login = values => dispatch => {
   dispatch({ type: actionTypes.LOGIN_REQUEST });
-  requestLogin(values)
+  Api.requestLogin(values)
     .then(res => {
       const { errMsg, code, data } = res.data;
       const { authToken, user } = data;
@@ -38,7 +38,7 @@ export const logout = () => dispatch => {
 export const editUser = (id, values) => dispatch => {
   // console.log("...............", id, values);
   dispatch({ type: actionTypes.EDIT_PROFILE_REQUEST });
-  updateUser(id, values)
+  Api.updateUser(id, values)
     .then(res => {
       const localUser = JSON.parse(localStorage.getItem("user"));
       const sessionUser = JSON.parse(sessionStorage.getItem("user"));

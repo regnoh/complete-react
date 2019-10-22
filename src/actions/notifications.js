@@ -1,8 +1,8 @@
 import actionTypes from "./types";
-import { fetchNotifications } from "../services";
+import Api from "../services";
 export const getNotifications = () => dispatch => {
   dispatch({ type: actionTypes.GET_NOTIFICATIONS_REQUEST });
-  fetchNotifications()
+  Api.fetchNotifications()
     .then(res => {
       dispatch({
         type: actionTypes.GET_NOTIFICATIONS_SUCCESS,

@@ -11,7 +11,7 @@ import {
 } from "antd";
 import E from "wangeditor";
 import moment from "moment";
-import { fetchArticle, updateArticle, createArticle } from "../../../services";
+import Api from "../../../services";
 import "./index.less";
 const ArticleForm = props => {
   const { form, match, history } = props;
@@ -31,7 +31,7 @@ const ArticleForm = props => {
     editor.create();
     const initValues = () => {
       setSpinning(true);
-      fetchArticle(id)
+      Api.fetchArticle(id)
         .then(res => {
           form.setFieldsValue({
             title: res.title,
@@ -75,7 +75,7 @@ const ArticleForm = props => {
       if (!err) {
         setSpinning(true);
         if (isEdit) {
-          updateArticle(id, {
+          Api.updateArticle(id, {
             ...values,
             createAt: values["createAt"].valueOf()
           })
@@ -87,7 +87,7 @@ const ArticleForm = props => {
               setSpinning(false);
             });
         } else {
-          createArticle(values)
+          Api.createArticle(values)
             .then(res => {
               message.success("创建成功" + res.id);
               history.goBack();

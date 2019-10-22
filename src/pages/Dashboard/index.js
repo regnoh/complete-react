@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, Row, Col, Spin } from "antd";
-import { fetchAmounts } from "../../services";
+import Api from "../../services";
 import echarts from "echarts";
 import "./index.less";
 const Dashboard = () => {
@@ -9,7 +9,7 @@ const Dashboard = () => {
   useEffect(() => {
     const amountChart = echarts.init(amountChartRef.current);
     setSpinning(true);
-    fetchAmounts()
+    Api.fetchAmounts()
       .then(res => {
         setSpinning(false);
         // console.log("TCL: Dashboard -> res", res);

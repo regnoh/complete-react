@@ -38,28 +38,28 @@ service.interceptors.response.use(res => {
 // 文章管理
 const ARTICLE_URL = "/api/v1/articles";
 // offset limited: 分页
-export const fetchArticles = (offset = 0, limited = 10) => {
+const fetchArticles = (offset = 0, limited = 10) => {
   return service.post(ARTICLE_URL, { offset, limited });
 };
-export const deleteArticle = id => {
+const deleteArticle = id => {
   return service.delete(`${ARTICLE_URL}/${id}`);
 };
-export const fetchArticle = id => {
+const fetchArticle = id => {
   return service.post(`${ARTICLE_URL}/${id}`);
 };
-export const updateArticle = (id, values) => {
+const updateArticle = (id, values) => {
   return service.put(`${ARTICLE_URL}/edit/${id}`, values);
 };
-export const createArticle = values => {
+const createArticle = values => {
   return service.post(`${ARTICLE_URL}/create`, values);
 };
 
-export const fetchAmounts = () => {
+const fetchAmounts = () => {
   return service.post(`${ARTICLE_URL}/amount`);
 };
 // 通知中心
 const NOTIFICATIONS_URL = "/api/v1/notifications";
-export const fetchNotifications = (offset = 0, limited = 10) => {
+const fetchNotifications = (offset = 0, limited = 10) => {
   return service.post(NOTIFICATIONS_URL, { offset, limited });
 };
 // 用户登录注册
@@ -67,9 +67,24 @@ const noInterceptService = axios.create({
   baseURL: isDev ? BASE_URL : ""
 });
 const USER_URL = "/api/v1/user";
-export const requestLogin = values => {
+const requestLogin = values => {
   return noInterceptService.post(`${USER_URL}/login`, values);
 };
-export const updateUser = (id, values) => {
+const updateUser = (id, values) => {
   return service.put(`${USER_URL}/${id}`, values);
+};
+
+export default {
+  // 文章
+  fetchArticles,
+  deleteArticle,
+  fetchArticle,
+  updateArticle,
+  createArticle,
+  fetchAmounts,
+  // 通知
+  fetchNotifications,
+  // 用户
+  requestLogin,
+  updateUser
 };
