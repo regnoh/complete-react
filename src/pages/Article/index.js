@@ -194,7 +194,14 @@ const ArticleList = () => {
     <>
       <Card
         title="文章列表"
-        extra={<Button onClick={onToExcel}>导出为excel</Button>}
+        extra={
+          <Button.Group>
+            <Button>
+              <Link to="/admin/article/create">创建文章</Link>
+            </Button>
+            <Button onClick={onToExcel}>导出为excel</Button>
+          </Button.Group>
+        }
         bordered={false}
       >
         <Table

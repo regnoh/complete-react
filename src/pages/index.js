@@ -20,8 +20,8 @@ const ArticleList = Loadable({
   loader: () => import("./Article"),
   loading: Loading
 });
-const ArticleEdit = Loadable({
-  loader: () => import("./Article/Edit"),
+const ArticleForm = Loadable({
+  loader: () => import("./Article/ArticleForm/"),
   loading: Loading
 });
 const Settings = Loadable({
@@ -49,7 +49,7 @@ export {
   Login,
   Dashboard,
   ArticleList,
-  ArticleEdit,
+  ArticleForm,
   Settings,
   Notifications,
   NotFound,

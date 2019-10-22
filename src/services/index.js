@@ -48,7 +48,10 @@ export const fetchArticle = id => {
   return service.post(`${ARTICLE_URL}/${id}`);
 };
 export const updateArticle = (id, values) => {
-  return service.put(`${ARTICLE_URL}/${id}`, values);
+  return service.put(`${ARTICLE_URL}/edit/${id}`, values);
+};
+export const createArticle = values => {
+  return service.post(`${ARTICLE_URL}/create`, values);
 };
 
 export const fetchAmounts = () => {

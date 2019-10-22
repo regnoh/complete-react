@@ -3,11 +3,11 @@ import {
   NotFound,
   Dashboard,
   ArticleList,
-  ArticleEdit,
   Settings,
   Notifications,
   NoAuth,
-  Profile
+  Profile,
+  ArticleForm
 } from "./pages";
 export const mainRoutes = [
   { path: "/login", component: Login },
@@ -34,7 +34,12 @@ export const adminRoutes = [
   },
   {
     path: "/admin/article/edit/:id",
-    component: ArticleEdit,
+    component: ArticleForm,
+    roles: ["001"]
+  },
+  {
+    path: "/admin/article/create",
+    component: ArticleForm,
     roles: ["001"]
   },
   {
