@@ -14,15 +14,15 @@ const Login = Loadable({
 #### (1) 布局<Layout>
 1. (commons：header,nav）（pages：content）
 2. 顶部：在线logo设计网站
-3. 侧边导航栏：antd<Menu><Menu.Item>（当前选中栏高亮...)
-4. 图标: iconfont或antd <Icon/>
-#### (2) 表格<Table>
+3. 侧边导航栏：antd<Menu <Menu.Item（当前选中栏高亮...)
+4. 图标: iconfont或antd <Icon
+#### (2) 表格<Table
 1. 格式化数据-> dataSource，column
 2. 当前行
 3. 分页(pagination属性, 接口offset,limited)
 4. xlsx将表格数据导出为excel(实际项目应由后端返回excel）
 ### 6. 登录
-#### (1) 表单<Form>
+#### (1) 表单<Form
 1. Form.create()->this.props.form->getFieldDecorator...
 2. 初始值(initialValues)
 3. 验证(rules, getFieldDecorator())
@@ -32,7 +32,7 @@ const Login = Loadable({
   不同: 1. 一般还要用ref指定dom, 
         2. 需要手动调用方法监听内容的更改，然后setFieldValues()保存为form里的值(getFieldsValues才可取到并自动验证)
         3. 设置初始值，不用initialValues，得自己往editor里设值
-  总结： antd的<Form><Input>已经封装好了数据绑定，而自定义表单项需要手动进行双向数据绑定
+  总结： antd的<Form <Input已经封装好了数据绑定，而自定义表单项需要手动进行双向数据绑定
   
 #### (2) 接口
 1. service->actionCreator->reducer->store->comp
@@ -70,9 +70,18 @@ export const adminRoutes = [
 hasPermissioin ? <Component .../> : <Redirect to="/noAuth"/>})}
 ```
 ### 8. 其他路由知识
-withRouter: 非<Router>组件也可获取路由信息props（eg: 顶部栏是非<Router>页面组件，但它需要获取当前路由来高亮当前菜单项，this.props.location.pathname)
+withRouter: 非<Router>组件也可获取路由信息props（eg: 顶部栏是非<Router>页面组件，但它需要获取当前路由来高亮当前菜单项，
+```js
+// Frame.js 导航
+import {withRouter} from "react-router-dom"
+export default withRouter(Frame)
+this.props.location.pathname)
+```
+render vs component
+```js
 <Router component={Home}/>
-<Router render={routeProps => return <Home .{...routeProps} />} />
+<Router render={routeProps => return <Home .{...routeProps} title="我是首页标题" />} />
+```
 ### 9. echart
 ### 10. img引用(本地，网络（右键，f12)，切图)
 ### 11. 文件上传antd-<Upload>, 头像antd<Avatar/>,logo,icon,svg
