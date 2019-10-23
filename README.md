@@ -35,13 +35,13 @@ const mapStateToProps = state => ({
         msg: payload.msg
       }
   ```
-5. update updateIn 
+## 5. update updateIn 
 ```js
 case INCRESEMENT:
   return state.update("count", v=> v+1)
 case ARTICLES_FETCH:
   return state.updateIn(["data", "list"], v=> payload.list.concat(v))
 ```
-6. map
+## 6. map
 immutable的Map不用转toJS也可用map()方法遍历数组元素
 
