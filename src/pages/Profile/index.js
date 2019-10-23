@@ -14,8 +14,8 @@ const Profile = ({ form, user, isLoading, editUser }) => {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (!err) {
-        console.log("TCL: Profile -> values", values);
-        editUser(user.id, values);
+        // console.log("TCL: Profile -> values", values);
+        editUser(user.getIn(["id"]), values);
       }
     });
   };
@@ -25,18 +25,17 @@ const Profile = ({ form, user, isLoading, editUser }) => {
         <Form onSubmit={handleSubmit} {...formItemLayout}>
           <Form.Item label="头像">
             {getFieldDecorator("avatar", {
-              initialValue: user.avatar
+              initialValue: user.getIn(["avatar"])
             })(
               <UploadImg
                 onImgChange={onImgChange}
-                defaultImg={user.avatar}
-                // defaultImg="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                defaultImg={user.getIn(["avatar"])}
               />
             )}
           </Form.Item>
           <Form.Item label="昵称">
             {getFieldDecorator("nickname", {
-              initialValue: user.nickname,
+              initialValue: user.getIn(["nickname"]),
               rules: [{ required: true, message: "请输入昵称" }]
             })(<Input />)}
           </Form.Item>
@@ -50,10 +49,12 @@ const Profile = ({ form, user, isLoading, editUser }) => {
     </Card>
   );
 };
-const mapStateToProps = ({ user }) => ({
-  user: user.user,
-  isLoading: user.isLoading
-});
+const mapStateToProps = state => {
+  return {
+    user: state.getIn(["user", "user"]),
+    isLoading: state.getIn(["user", "isLoading"])
+  };
+};
 
 export default connect(
   mapStateToProps,

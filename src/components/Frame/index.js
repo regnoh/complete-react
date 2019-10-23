@@ -8,6 +8,7 @@ import "./index.less";
 import { withRouter } from "react-router-dom";
 import { getNotifications } from "../../actions/notifications";
 import { logout } from "../../actions/user";
+
 const { Header, Content, Sider } = Layout;
 // 在线制作logo: http://www.uugai.com/
 // antd - layout - less修改样式
@@ -100,10 +101,17 @@ const Frame = props => {
     </Layout>
   );
 };
-const mapStateToProps = ({ notifications, user }) => ({
-  unReadCount: notifications.list.filter(item => !item.hasRead).length,
-  user: user.user
-});
+const mapStateToProps = state => {
+  const list = state.getIn(["notifications", "list"]);
+  return {
+    user: state.getIn(["user", "user"]),
+    unReadCount: list.filter(item => !item.hasRead).length
+  };
+};
+// const mapStateToProps = ({ notifications, user }) => ({
+//   unReadCount: notifications.list.filter(item => !item.hasRead).length,
+//   user: user.user
+// });
 
 export default connect(
   mapStateToProps,

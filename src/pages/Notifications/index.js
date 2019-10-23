@@ -46,7 +46,8 @@ const Notifications = ({
   );
 };
 const mapStateToProps = state => {
-  const { list, isLoading } = state.notifications;
+  const list = state.getIn(["notifications", "list"]);
+  const isLoading = state.getIn(["notifications", "isLoading"]);
   return {
     list,
     isLoading,

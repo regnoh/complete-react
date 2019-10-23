@@ -96,8 +96,11 @@ const Login = ({ form, login, isLoading, isLogin }) => {
   );
 };
 const mapStateToProps = state => {
-  const { isLoading, isLogin } = state.user;
-  return { isLoading, isLogin };
+  // const { isLoading, isLogin } = state.user;
+  return {
+    isLoading: state.getIn(["user", "isLoading"]),
+    isLogin: state.getIn(["user", "isLogin"])
+  };
 };
 export default connect(
   mapStateToProps,

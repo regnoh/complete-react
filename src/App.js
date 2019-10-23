@@ -16,7 +16,8 @@ const App = ({ isLogin, user }) => {
               path={path}
               exact={exact}
               render={routeProps => {
-                const hasPermission = roles.includes(user.role);
+                const hasPermission = true;
+                // const hasPermission = roles.includes(user.role);
                 return hasPermission ? (
                   <Component {...routeProps} />
                 ) : (
@@ -36,9 +37,11 @@ const App = ({ isLogin, user }) => {
     <Redirect to="/login" />
   );
 };
-const mapStateToProps = ({ user }) => ({
-  isLogin: user.isLogin,
-  user: user.user
+const mapStateToProps = state => ({
+  // isLogin: user.isLogin,
+  // user: user.user
+  isLogin: state.getIn(["user", "isLogin"]),
+  user: state.getIn(["user", "user"])
 });
 
 export default connect(mapStateToProps)(App);
